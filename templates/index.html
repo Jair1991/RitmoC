@@ -1,65 +1,64 @@
 <html>
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-		<script>
-			$(document).ready(function(){
-				function generar(){
-					var nUsuario = document.getElementById('sesionUser').value;
-					$.ajax({
-						type: "GET",
-						url: "/aleatorio",
-						data:{
-								"sesionU":nUsuario
-						},
-						success: function(data) {
-							var obj=jQuery.parseJSON(data);
-							var resp="<table border='2'><tr><td>Ritmo cardiaco</td><td>"+obj.RR+
-							"</td></tr><tr><td>Variabilidad del ritmo cardiaco</td><td>"+obj.HR+"</table>";
-							$("#datos").html(resp);
-						}
-					});
-				}
-				
-				$('#consultar').click(function(){
-					$.ajax({
-						type: "GET",
-						url: "/consultarT",
-						success: function(data) {
-							$("#mostrardatos").html(data);
-						}
-					});
-				});
-				
-				$('#consultarsesion').click(function(){
-					var nUsuario = document.getElementById('sesionBuscada').value;
-					$.ajax({
-						type: "GET",
-						url: "/consultarS",
-						data:{
-								"sesionB":nUsuario
-							},
-						success: function(data) {
-							$("#mostrarsesion").html(data);
-						}
-					});
-				});
-				setInterval(generar,2000); 
-			});
-		</script>
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="{{url_for('static', filename = 'style_tabs.css')}}" rel="stylesheet">
+		<link href="{{url_for('static', filename = 'style_table.css')}}" rel="stylesheet">
+		<script src="{{url_for('static', filename = 'tabs.js')}}"></script>
+		<script src="{{url_for('static', filename = 'script_index.js')}}"></script>		
 	</head>
 	<body>
-		<h2>{{titulo}}</h2>
-		<br>
-		<p>Numero de sesion: <input type="text" id="sesionUser"></p>
-		<br>
-		<div id="datos"></div>
-		<br>
-		<p>Numero de sesion: <input type="text" id="sesionBuscada"></p>
-		<br>
-		<button id="consultar">Consultar</button>
-		<button id="consultarsesion">Consultar Sesion</button>
-        <br><br>
-		<div id="mostrardatos"></div>
-		<div id="mostrarsesion"></div>
+		<div class="tab">
+			<button class="tablinks" onclick="openCity(event, 'Escaneo')">Escaneo</button>
+            <button class="tablinks" onclick="openCity(event, 'Sesiones')">Sesiones</button>
+            <button class="tablinks" onclick="openCity(event, 'Estadisticas')">Estadisticas</button>
+            <button class="tablinks" onclick="openCity(event, 'Analitica')">Analitica</button>
+		</div>
+       
+		<div id="Escaneo" class="tabcontent">
+			<center>
+			<h2>{{titulo}}</h2>
+			<p>Numero de sesion: <input type="text" id="sesionUser"></p>
+			<button id="iniciar">Iniciar escaneo</button>
+			<button id="detener">Detener escaneo</button>
+			</center>
+			<br>
+			<div id="datos"></div>
+            <br>
+            <div id="chartContainer" style="height: 200px; width: 100%;"></div>
+		</div>
+       
+		<div id="Sesiones" class="tabcontent">
+			<center>
+			<p>Numero de sesion: <input type="text" id="sesionBuscada"></p>
+			<br>
+			<button id="consultar">Consultar</button>
+			<button id="consultarsesion">Consultar Sesion</button>
+            <br><br>
+            </center>
+			<div id="mostrardatos"></div>
+			<div id="mostrarsesion"></div>
+		</div>
+
+		<div id="Estadisticas" class="tabcontent">
+			<center>
+			<p>Numero de sesion: <input type="text" id="sesionestadistica"></p>
+			<br>
+			<button id="estadistica">Estadistica</button>
+            <br><br>
+            </center>
+			<div id="mostrarestadistica"></div>
+		</div>
+
+		<div id="Analitica" class="tabcontent">
+			<center>
+			<p>Numero de sesion: <input type="text" id="sesioncentroide"></p>
+			<br>
+			<button id="centroide">Centroide</button>
+            <br><br>
+            </center>
+			<div id="mostrarcentroide"></div>			
+		</div>
 	</body>
 </html>
